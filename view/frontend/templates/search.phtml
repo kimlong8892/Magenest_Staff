@@ -1,0 +1,31 @@
+<lable>Search Staff</lable>
+<input type="text" id="txtSearch" value="af">
+<div id="data">
+
+</div>
+
+<script>
+    require(['jquery'], function ($) {
+        var txtSearch = $("#txtSearch").val();
+        $.ajax({
+            url: url,
+            data: {txtSearch:txtSearch},
+            type: 'POST',
+            success: function (data) {
+                $("#data").html(data);
+            }
+        });
+        var url = BASE_URL+'staff/staff/search';
+        $("#txtSearch").keypress(function () {
+            var txtSearch = $("#txtSearch").val();
+            $.ajax({
+                url: url,
+                data: {txtSearch:txtSearch},
+                type: 'POST',
+                success: function (data) {
+                    $("#data").html(data);
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,54 @@
+<?php
+    $staff = $block->getStaff();
+?>
+<script>
+    require(['jquery', 'Magento_Ui/js/modal/alert'], function ($, alert) {
+        var status = <?= $staff['type']; ?>;
+        $(document).ready(function () {
+            if(status != 1 && status != 2)
+            {
+                $("#type option").each(function () {
+                    if($(this).val() != 1 && $(this).val() != 2)
+                        $(this).attr({'selected':true});
+                });
+            }
+            else
+            {
+                $("#type option").each(function () {
+                    if($(this).val() == status)
+                        $(this).attr({'selected':true});
+                });
+            }
+            $("#save").click(function () {
+                var url = BASE_URL+'staff/staff/update';
+                var type = $("#type option:selected").val();
+                var name = $("#name").val();
+                var id = $("#id").val();
+                $.ajax({
+                    url: url,
+                    data: {type: type, name:name, id:id},
+                    type: 'POST',
+                    success: function () {
+                        alert({
+                            title: 'success',
+                            modalClass: 'alert',
+                        });
+                    }
+                });
+            });
+        });
+    });
+</script>
+
+<div>
+    <lable>Staff Type</lable>
+    <select name="type" id="type">
+        <option value="1">lv1</option>
+        <option value="2">lv2</option>
+        <option value="3">Not Staff</option>
+    </select>
+    <input type="hidden" id="id" value="<?= $staff['id'] ?>">
+    <lable>Nick Name</lable>
+    <input type="text" id="name" value="<?= $staff['nick_name'] ?>">
+    <button style="background: blue;" id="save">Save</button>
+</div>
