@@ -1,10 +1,12 @@
 require(['jquery'], function ($) {
     $(document).ready(function () {
-        if(type != '')
-        {
-            setTimeout(function () {
+        var check = false;
+        var refreshId = setInterval(function () {
+            if($(".price").text() != '' && !check){
                 $(".price").append('(' + type + ')');
-            }, 1000);
-        }
+                check = true;
+                clearInterval(refreshId);
+            }
+        }, 1000);
     });
 });
