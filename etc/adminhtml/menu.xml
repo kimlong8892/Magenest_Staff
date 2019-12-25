@@ -6,6 +6,6 @@
         <add id="Magenest_Movie::Staff" title="Staff Management" module="Magenest_Staff" sortOrder="1"
              resource="Magento_Backend::Staff"/>
         <add id="Magenest_Movie::ShowStaff" title="Staff" module="Magenest_Staff" sortOrder="0"
-             parent="Magenest_Movie::Staff" action="staff/staff/show" resource="Magento_Backend::Staff"/>
+             parent="Magenest_Movie::Staff" action="staff/staff/show" resource="Magento_Backend::ShowStaff"/>
     </menu>
 </config>

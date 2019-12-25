@@ -12,38 +12,50 @@ class SetStaff implements ObserverInterface
     protected $_request;
     protected $_layout;
     protected $_objectManager = null;
-    protected $_customerGroup;
     private $logger;
-    protected $_customerRepositoryInterface;
     protected $modelStaff;
+    protected $collectionStaffFactory;
 
 
-    protected $_customerModelFactory;
+
 
     public function __construct
     (
         \Magento\Framework\View\Element\Context $context,
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Psr\Log\LoggerInterface $logger,
-        \Magento\Customer\Api\CustomerRepositoryInterface $customerRepositoryInterface,
-        \Magento\Customer\Model\CustomerFactory $customerModelFactory,
-        \Magenest\Staff\Model\StaffFactory $modelStaff
+        \Magenest\Staff\Model\StaffFactory $modelStaff,
+        \Magenest\Staff\Model\ResourceModel\Staff\CollectionFactory $collectionStaffFactory
     )
     {
         $this->_layout = $context->getLayout();
         $this->_request = $context->getRequest();
         $this->_objectManager = $objectManager;
         $this->logger = $logger;
-        $this->_customerRepositoryInterface = $customerRepositoryInterface;
-        $this->_customerModelFactory = $customerModelFactory;
         $this->modelStaff = $modelStaff;
+        $this->collectionStaffFactory = $collectionStaffFactory;
     }
 
     public function execute(EventObserver $observer)
     {
         $customer = $observer->getCustomerDataObject();
-        $idCustomer = $customer->getId();
+        $customerId = $customer->getId();
 
+        $modelStaff = $this->modelStaff->create();
+        $idStaff = $this->collectionStaffFactory->create()->addFieldToFilter('customer_id', $customerId)->getFirstItem()->getData('id');
+        if($idStaff != null)
+            $modelStaff->load($idStaff);
+        $modelStaff->setCustomerId($customerId);
+        $modelStaff->setNickName($customer->getFirstName().' '.$customer->getLastName());
+        $modelStaff->setType($customer->getCustomAttribute('staff_type')->getValue() ?? 3);
+        $modelStaff->setStatus(2);
+        try {
+            $modelStaff->save();
+        } catch (\Exception $e) {
+            $this->logger->critical($e->getMessage());
+        }
+
+        /*
         $modelStaff = $this->modelStaff->create();
         $row = $modelStaff->getCollection()->addFieldToFilter('customer_id', $idCustomer);
 
@@ -53,11 +65,17 @@ class SetStaff implements ObserverInterface
         }
         $modelStaff->setCustomerId($idCustomer);
         $modelStaff->setNickName($customer->getFirstName().' '.$customer->getLastName());
-        $type = $this->_customerRepositoryInterface->getById($idCustomer)->getCustomAttribute('staff_type');
-        if($type == null)
-            $type = 3;
-        $modelStaff->setType($type->getValue());
+        $customerInterFace = $this->_customerRepositoryInterface->getById($idCustomer);
+        $checkType = $customerInterFace->getCustomAttribute('staff_type');
+        if($checkType == null)
+        {
+            $customerInterFace->setCustomAttribute('staff_type', 3);
+            $this->_customerRepositoryInterface->save($customerInterFace);
+        }
+        else
+            $modelStaff->setType($checkType->getValue());
         $modelStaff->setStatus(2);
         $modelStaff->save();
+        */
     }
 }

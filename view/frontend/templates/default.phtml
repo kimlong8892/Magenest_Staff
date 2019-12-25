@@ -1,0 +1,13 @@
+<?php
+    $staff = $block->getStaff();
+    $type = $staff['type'] ?? '';
+?>
+<script>
+    var type = <?= $type; ?>;
+    if(type == 1)
+        type = 'lv1';
+    else if (type == 2)
+        type = 'lv2';
+    else
+        type = '';
+</script>

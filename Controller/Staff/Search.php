@@ -19,7 +19,7 @@ class Search extends Action
         Context $context,
         PageFactory $resultPageFactory,
         \Magenest\Staff\Model\StaffFactory $modelStaffFactory,
-        \Magento\Framework\Serialize\Serializer\Json $json,
+        JsonFactory $json,
         \Magento\Framework\Serialize\Serializer\Serialize $serialize
     ) {
         $this->modelStaffFactory = $modelStaffFactory;
@@ -40,17 +40,12 @@ class Search extends Action
                 echo __('No result');
             else
             {
-                $rs = '';
-                forEach($modelStaff->getData() as $data)
-                {
-                    $rs .= $data['nick_name'].', ';
-                }
-                echo substr($rs, 0, strlen($rs)-2);
+                $result = $this->json->create();
+                $result->setData($modelStaff->getData());
+                return $result;
             }
             return;
         }
-
-
         $resultPage = $this->resultPageFactory->create();
         return $resultPage;
     }

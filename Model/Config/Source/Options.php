@@ -14,6 +14,7 @@ class Options extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
     public function getAllOptions()
     {
         $this->_options = [
+            ['label' => __('not staff'), 'value' => 3],
             ['label' => __('lv1'), 'value'=>1],
             ['label' => __('lv2'), 'value'=>2],
         ];

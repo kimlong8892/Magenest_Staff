@@ -36,7 +36,7 @@ class UpgradeData implements UpgradeDataInterface
 
     public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
-        if (version_compare($context->getVersion(), '2.4.3') < 0) {
+        if (version_compare($context->getVersion(), '2.4.7') < 0) {
             $this->addAttributeAvatarCustomer($setup);
         }
     }
@@ -53,21 +53,12 @@ class UpgradeData implements UpgradeDataInterface
             'type' => 'int',
             'label' => 'Type Staff',
             'input' => 'select',
-            'source' => \Magento\Eav\Model\Entity\Attribute\Source\Table::class,
+            'source' => 'Magenest\Staff\Model\Config\Source\Options',
             'required' => false,
             'sort_order' => 110,
             'visible' => true,
             'system' => false,
             'position' => 110,
-            'option' =>
-                array (
-                    'values' =>
-                        array (
-                            'lv1' => 1,
-                            'lv2' => 2,
-                        ),
-                ),
-
         ]);
         $image = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'staff_type')
             ->addData([

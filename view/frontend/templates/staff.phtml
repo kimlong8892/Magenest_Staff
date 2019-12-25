@@ -1,9 +1,10 @@
 <?php
     $staff = $block->getStaff();
+    $type = $staff['type'] ?? 3;
 ?>
 <script>
     require(['jquery', 'Magento_Ui/js/modal/alert'], function ($, alert) {
-        var status = <?= $staff['type']; ?>;
+        var status = <?= $type; ?>;
         $(document).ready(function () {
             if(status != 1 && status != 2)
             {
@@ -33,7 +34,13 @@
                             title: 'success',
                             modalClass: 'alert',
                         });
-                    }
+                    },
+                    fail: function () {
+                        alert({
+                            title: 'error',
+                            modalClass: 'alert',
+                        });
+                    },
                 });
             });
         });

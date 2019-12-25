@@ -16,16 +16,30 @@
             }
         });
         var url = BASE_URL+'staff/staff/search';
-        $("#txtSearch").keypress(function () {
+        $("#txtSearch").keyup(function () {
             var txtSearch = $("#txtSearch").val();
-            $.ajax({
-                url: url,
-                data: {txtSearch:txtSearch},
-                type: 'POST',
-                success: function (data) {
-                    $("#data").html(data);
-                }
-            });
+            if(txtSearch == '')
+                $("#data").html('');
+            else
+            {
+                $.ajax({
+                    url: url,
+                    data: {txtSearch:txtSearch},
+                    type: 'POST',
+                    success: function (data) {
+                        if(data == 'No result')
+                        {
+                            $("#data").html(data);
+                            return;
+                        }
+
+                        $("#data").html('');
+                        data.forEach(function (d) {
+                            $("#data").append(d.nick_name + ' ');
+                        });
+                    }
+                });
+            }
         });
     });
 </script>
