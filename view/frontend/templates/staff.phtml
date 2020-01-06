@@ -20,7 +20,9 @@
                         $(this).attr({'selected':true});
                 });
             }
+
             $("#save").click(function () {
+                $('body').trigger('processStart');
                 var url = BASE_URL+'staff/staff/update';
                 var type = $("#type option:selected").val();
                 var name = $("#name").val();
@@ -34,6 +36,7 @@
                             title: 'success',
                             modalClass: 'alert',
                         });
+                        $('body').trigger('processStop');
                     },
                     fail: function () {
                         alert({

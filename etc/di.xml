@@ -4,16 +4,14 @@
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
             <argument name="collections" xsi:type="array">
-                <item name="staff_data_source" xsi:type="string">Magenest\Staff\Model\ResourceModel\Staff\Collection</item>
+                <item name="staff_data_source" xsi:type="string">Magenest\Staff\Model\ResourceModel\Staff\Gird\Collection</item>
             </argument>
         </arguments>
     </type>
-    <virtualType name="Magenest\Staff\Model\ResourceModel\Staff\Collection"
-                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+    <virtualType name="Magenest\Staff\Model\ResourceModel\Staff\Gird\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">magenest_staff</argument>
             <argument name="resourceModel" xsi:type="string">Magenest\Staff\Model\ResourceModel\Staff</argument>
         </arguments>
     </virtualType>
 </config>
-
